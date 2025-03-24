@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using VideoGameApi.Controllers.Data;
 
@@ -11,9 +12,11 @@ using VideoGameApi.Controllers.Data;
 namespace VideoGameApi.Migrations
 {
     [DbContext(typeof(VideoGameDbContext))]
-    partial class VideoGameDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250324092414_VideoGameDetails")]
+    partial class VideoGameDetails
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -21,40 +24,6 @@ namespace VideoGameApi.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
-
-            modelBuilder.Entity("VideoGameApi.Model.Developer", b =>
-                {
-                    b.Property<int>("id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("id"));
-
-                    b.Property<string>("name")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("id");
-
-                    b.ToTable("Developer");
-                });
-
-            modelBuilder.Entity("VideoGameApi.Model.Publisher", b =>
-                {
-                    b.Property<int>("id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("id"));
-
-                    b.Property<string>("name")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("id");
-
-                    b.ToTable("Publisher");
-                });
 
             modelBuilder.Entity("VideoGameApi.Model.VideoGame", b =>
                 {
@@ -64,23 +33,19 @@ namespace VideoGameApi.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<int?>("DeveloperId")
-                        .HasColumnType("int");
+                    b.Property<string>("Developer")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Platform")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("PublisherId")
-                        .HasColumnType("int");
+                    b.Property<string>("Publisher")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Title")
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("DeveloperId");
-
-                    b.HasIndex("PublisherId");
 
                     b.ToTable("VideoGames");
 
@@ -88,31 +53,41 @@ namespace VideoGameApi.Migrations
                         new
                         {
                             Id = 1,
+                            Developer = "Nintendo EPD",
                             Platform = "Nintendo Switch",
+                            Publisher = "Nintendo",
                             Title = "The Legend of Zelda: Breath of the Wild"
                         },
                         new
                         {
                             Id = 2,
+                            Developer = "Nintendo EPD",
                             Platform = "Nintendo Switch",
+                            Publisher = "Nintendo",
                             Title = "Super Mario Odyssey"
                         },
                         new
                         {
                             Id = 3,
+                            Developer = "CD Projekt Red",
                             Platform = "PlayStation 4",
+                            Publisher = "CD Projekt",
                             Title = "The Witcher 3: Wild Hunt"
                         },
                         new
                         {
                             Id = 4,
+                            Developer = "Rockstar Studios",
                             Platform = "PlayStation 4",
+                            Publisher = "Rockstar Games",
                             Title = "Red Dead Redemption 2"
                         },
                         new
                         {
                             Id = 5,
+                            Developer = "Naughty Dog",
                             Platform = "PlayStation 4",
+                            Publisher = "Sony Interactive Entertainment",
                             Title = "The Last of Us Part II"
                         });
                 });
@@ -140,21 +115,6 @@ namespace VideoGameApi.Migrations
                         .IsUnique();
 
                     b.ToTable("VideoGameDetails");
-                });
-
-            modelBuilder.Entity("VideoGameApi.Model.VideoGame", b =>
-                {
-                    b.HasOne("VideoGameApi.Model.Developer", "Developer")
-                        .WithMany()
-                        .HasForeignKey("DeveloperId");
-
-                    b.HasOne("VideoGameApi.Model.Publisher", "Publisher")
-                        .WithMany()
-                        .HasForeignKey("PublisherId");
-
-                    b.Navigation("Developer");
-
-                    b.Navigation("Publisher");
                 });
 
             modelBuilder.Entity("VideoGameApi.Model.VideoGameDetails", b =>
